@@ -1,9 +1,10 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction{
-	String Type;
-	double Amount, remBalance;
-	LocalDateTime DateTime;
+	private String Type;
+	private double Amount, remBalance;
+	private LocalDateTime DateTime;	
 	
 	public Transaction(String typ, double am, double rembal) {
 		Type = typ;
@@ -12,8 +13,13 @@ public class Transaction{
 		DateTime = LocalDateTime.now();	
 	}
 	
+	public LocalDateTime getDateTime() {
+		return DateTime;
+	}
+	
 	public void printTransaction() {
-		System.out.println(Type + ": Rs." + Amount + " on " + DateTime + " RemBalance." + remBalance);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		System.out.println(Type + ": Rs." + Amount + " on " + DateTime.format(formatter) + " RemBalance." + remBalance);
 	}
 	
 }

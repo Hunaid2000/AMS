@@ -34,7 +34,7 @@ public class Bank {
 		boolean OldCustomer = false;
 		Customer customer = null;
 		for (int i = 0; i < customersList.size(); i++) {
-			if(customersList.elementAt(i).CNIC == cnic) {
+			if(customersList.elementAt(i).getCNIC() == cnic) {
 				OldCustomer = true;
 				customer = customersList.elementAt(i); 
 			}
@@ -49,7 +49,7 @@ public class Bank {
 		char type = input.next().charAt(0);
 		if(type == 's' || type == 'S') {
 			for (int i = 0; i < savingsAccountsList.size(); i++) {
-				if(cnic.equals(savingsAccountsList.elementAt(i).getAccountHolder().CNIC)) {
+				if(cnic.equals(savingsAccountsList.elementAt(i).getAccountHolder().getCNIC())) {
 					System.out.println("You already have 1 Savings account.");
 					haveSavingsAccount = true;
 				}				
@@ -63,7 +63,7 @@ public class Bank {
 		
 		else if(type == 'c' || type == 'C') {
 			for (int i = 0; i < checkingAccountsList.size(); i++) {
-				if(cnic.equals(checkingAccountsList.elementAt(i).getAccountHolder().CNIC)) {
+				if(cnic.equals(checkingAccountsList.elementAt(i).getAccountHolder().getCNIC())) {
 					System.out.println("You already have 1 Checking account.");
 					haveCheckingAccount = true;
 				}				

@@ -3,7 +3,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Vector;
 
 public class Account{
-	static int count = 1;
+	private static int count = 1;
 	private int AccNo;
 	protected double Balance;
 	private Customer AccountHolder;
@@ -26,8 +26,16 @@ public class Account{
 		return AccNo;
 	}
 	
+	public void setLastYear(int lastYear) {
+		LastYear = lastYear;
+	}
+	
+	public void setDateCreated(LocalDate dateCreated) {
+		DateCreated = dateCreated;
+	}
+	
 	public void checkBalance() {
-		System.out.println("Account Holder Name: " + AccountHolder.Name);
+		System.out.println("Account Holder Name: " + AccountHolder.getName());
 		System.out.println("Account Balance: " + Balance);
 	}
 	
@@ -44,10 +52,14 @@ public class Account{
 	}
 	
 	public void makeDeposit(double amount) {
-		Balance += amount;
-		System.out.println("Transaction Successful.");
-		Transaction transaction = new Transaction("Deposit", amount, Balance);
-		transactions.add(transaction);
+		if(amount <= 0)
+			System.out.println("Incorrect Amount");
+		else {
+			Balance += amount;
+			System.out.println("Transaction Successful.");
+			Transaction transaction = new Transaction("Deposit", amount, Balance);
+			transactions.add(transaction);
+		}		
 	}
 	
 	public void makeWithdrawal(double amount) {
@@ -120,8 +132,8 @@ class SavingsAccount extends Account{
 	}
 	
 	public double calculateInterest() {
-		long days = DateCreated.until(LocalDate.now(), ChronoUnit.DAYS);		
-		return Balance*InterestRate*(days/365.0);
+		long months = DateCreated.until(LocalDate.now(), ChronoUnit.MONTHS);	
+		return Balance*InterestRate*(months/12.0);
 	}
 	
 	public double calculateZakat() {
@@ -135,6 +147,7 @@ class SavingsAccount extends Account{
 	public void makeDeduction() {
 		double amount = calculateZakat();
 		if(amount != 0) {
+			Balance -= amount;
 			Transaction deduction = new Transaction("Zakat Deduction", amount, Balance);
 			deductions.add(deduction);
 		}		
@@ -157,9 +170,13 @@ class CheckingAccount extends Account{
 		
 	}
 	
+	public void setLastTransactionMonth(java.time.Month lastTransactionMonth) {
+		LastTransactionMonth = lastTransactionMonth;
+	}
+	
 	public void cutTransactionFee(Transaction transaction) {
 		if(LastTransactionMonth == null) {
-			LastTransactionMonth = transaction.DateTime.getMonth();
+			LastTransactionMonth = transaction.getDateTime().getMonth();
 			FreeTransactionCount--;
 		}
 		
@@ -170,13 +187,13 @@ class CheckingAccount extends Account{
 			else {
 				Balance -= TransactionFee;
 			}
-			LastTransactionMonth = transaction.DateTime.getMonth();
+			LastTransactionMonth = transaction.getDateTime().getMonth();
 		}
 		
 		else if (LocalDate.now().getMonth() != LastTransactionMonth) {
 			FreeTransactionCount = 2;
 			FreeTransactionCount--;
-			LastTransactionMonth = transaction.DateTime.getMonth();
+			LastTransactionMonth = transaction.getDateTime().getMonth();
 		}		
 	}
 	
@@ -195,11 +212,15 @@ class CheckingAccount extends Account{
 	}
 	
 	public void makeDeposit(double amount) {
-		Balance += amount;
-		Transaction transaction = new Transaction("Deposit", amount, Balance);
-		transactions.add(transaction);
-		cutTransactionFee(transaction);
-		System.out.println("Transaction Successful.");
+		if(amount <= 0)
+			System.out.println("Incorrect Amount");
+		else {
+			Balance += amount;
+			Transaction transaction = new Transaction("Deposit", amount, Balance);
+			transactions.add(transaction);
+			cutTransactionFee(transaction);
+			System.out.println("Transaction Successful.");
+		}		
 	}
 	
 	public double calculateTax() {
@@ -213,6 +234,7 @@ class CheckingAccount extends Account{
 	public void makeDeduction() {
 		double amount = calculateTax();
 		if(amount != 0) {
+			Balance -= amount;
 			Transaction deduction = new Transaction("Tax Deduction", amount, Balance);
 			deductions.add(deduction);
 		}		
