@@ -74,7 +74,7 @@ public class SavingsTest {
 	public void testcalculateInterest() {
 		assertEquals(0, savingsAccount.calculateInterest(), 0);
 		savingsAccount.setDateCreated(LocalDate.of(2021, 01, 01));
-		assertEquals(133.3, savingsAccount.calculateInterest(), 0.1);
+		assertEquals(150, savingsAccount.calculateInterest(), 0.1);
 	}
 	
 	// Test to check balance
