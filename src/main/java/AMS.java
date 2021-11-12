@@ -1,8 +1,20 @@
 import java.util.Scanner;
 
 public class AMS{
-	public static void main(String[] args) {
-		Bank bank = new Bank(new Customer("i192043", "Hunaid", "Rawalpindi", "NA"));
+	public static void main(String[] args) {			
+		Scanner in1 = new Scanner(System.in);     
+		System.out.println("Press 1 for File.");
+		System.out.println("Press 2 for Oracle.");
+		System.out.println("Press 3 for MySQL.");
+		int saveoption = in1.nextInt();
+		while (saveoption < 0 || saveoption > 3) {
+			System.out.println("Incorrect Option. Enter again.");
+			System.out.println("Press 1 for File.");
+			System.out.println("Press 2 for Oracle.");
+			System.out.println("Press 3 for MySQL.");
+			saveoption = in1.nextInt();
+		}	
+		Bank bank = new Bank(new Customer("i192043", "Hunaid", "Rawalpindi", "NA"), saveoption);
 		while (true) {
 			Scanner in = new Scanner(System.in);     
 			System.out.println("Press a/A for Admin.");

@@ -8,7 +8,7 @@ public class BankTest {
 	
 	@BeforeClass
 	public static void initializeBank(){
-		bank = new Bank(new Customer("i192043", "Hunaid Owner", "Rawalpindi", "NA"));
+		bank = new Bank(new Customer("i192043", "Hunaid Owner", "Rawalpindi", "NA"),1);
 		SavingsAccount savingsAccount = new SavingsAccount(100, 2, new Customer("1", "Customer1", "Rawalpindi", "NA"));
 		bank.savingsAccountsList.add(savingsAccount);
 		CheckingAccount checkingAccount = new CheckingAccount(100, 10, 2, 0.15, new Customer("2", "Customer2", "Rawalpindi", "NA"));

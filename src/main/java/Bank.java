@@ -8,13 +8,20 @@ public class Bank {
 	Vector<Customer> customersList;
 	Account loginedAccount;
 	double interestRateforSavings;
+	PersistenceHandler handler;
 	
-	public Bank(Customer owner) {
+	public Bank(Customer owner, int saveoption) {
 		bankOnwer = owner;
 		savingsAccountsList = new Vector<SavingsAccount>();
 		checkingAccountsList = new Vector<CheckingAccount>();
 		customersList = new Vector<Customer>();
 		interestRateforSavings = 0;
+		if(saveoption == 1)
+			handler = new FileHandler();
+		else if(saveoption == 2)
+			handler = new OracleDBHandler();
+		else if(saveoption == 3)
+			handler = new MySQLHandler();
 	}
 	
 	public void createAccount() {
@@ -57,6 +64,7 @@ public class Bank {
 			if(!haveSavingsAccount) {
 				SavingsAccount account = new SavingsAccount(bal, interestRateforSavings, customer);
 				savingsAccountsList.add(account);
+				handler.Save(account);
 				System.out.println("Savings Account Created.");
 			}			
 		}
@@ -71,6 +79,7 @@ public class Bank {
 			if(!haveCheckingAccount) {
 				CheckingAccount account = new CheckingAccount(bal, 10, 2, 0.15, customer);
 				checkingAccountsList.add(account);
+				handler.Save(account);
 				System.out.println("Checking Account Created.");
 			}						
 		}
